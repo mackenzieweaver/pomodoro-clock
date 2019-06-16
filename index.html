@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Pomodoro Clock</title>
+        <link rel="stylesheet" href="stylesheet.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="title">
+                Pomodoro Clock
+            </div>
+            <div class="lengths">
+                <div id="break-label" class="break">
+                    <p>Break Length</p>
+                    <div class="length_controls">
+                        <button type="button" id="break-decrement">
+                            <i class="fas fa-arrow-down"></i>
+                        </button>
+                        <p class="number" id="break-length">5</p>
+                        <button type="button" id="break-increment"><i class="fas
+                                fa-arrow-up"></i></button>
+                    </div>
+                </div>
+                <div id="session-label" class="session">
+                    <p>Session Length</p>
+                    <div class="length_controls">
+                        <button type="button" id="session-decrement"><i
+                                class="fas fa-arrow-down"></i></button>
+                        <p class="number" id="session-length">25</p>
+                        <button type="button" id="session-increment"><i
+                                class="fas fa-arrow-up"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="timer">
+                <p id="timer-label">Session</p>
+                <div class="countdown" id="time-left">25:00</div>
+            </div>
+            <div class="controls">
+                <button type="button" id="start_stop"><i class="fas fa-play"></i></button>
+                <!-- <button type="button"><i class="fas fa-pause"></i></button> -->
+                <button type="button" id="reset"><i class="fas fa-sync"></i></button>
+            </div>
+            <div class="contact">
+                <p>Coded by</p>
+                <p>Mackenzie Weaver</p>
+            </div>
+        </div>
+
+        <script src="./app.js"></script>
+        <script src="https://kit.fontawesome.com/8b5ae67e5c.js"></script>
+        <script
+            src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+    </body>
+</html>
