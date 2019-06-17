@@ -23,12 +23,12 @@ startStop.addEventListener("click", playbutton); // play/pause button
 // up-down length adjust functions
 function decrementBreak() {
   let value = parseInt(breakLength.innerHTML);
-  if (value >= 0) { breakLength.innerHTML = value - 1; }
+  if (value > 1) { breakLength.innerHTML = value - 1; }
 }
 
 function decrementSession() {
   let value = parseInt(sessionLength.innerHTML);
-  if (value >= 0) { sessionLength.innerHTML = value - 1; }
+  if (value > 1) { sessionLength.innerHTML = value - 1; }
   timer.innerHTML = sessionLength.innerHTML + ':' + '00';
   stopTimer();
 }
@@ -47,44 +47,52 @@ function incrementSession() {
 
 // reset button
 function resetIt() {
+  stopTimer();
   breakLength.innerHTML = 5;
   sessionLength.innerHTML = 25;
   timer.innerHTML = '25:00';
 }
 
 function getTime() {
+  // get displayed time
   let time = timer.innerHTML.split('');
+  // convert to number from string
   let minutes = parseInt(time[0] + time[1]);
   let seconds = parseInt(time[3] + time[4]);
-  return minutes * 60 + seconds; // total seconds
+  // convert minutes to seconds and add seconds then subtract one to count down
+  let total = (minutes * 60 + seconds) - 1;
+  // split total amount of seconds into minutes
+  minutes = Math.floor(total / 60);
+  // and seconds
+  seconds = Math.floor(total % 60);
+  // add 0 padding
+  minutes < 10 ? minutes = "0" + parseInt(minutes) : minutes = minutes;
+  seconds < 10 ? seconds = "0" + parseInt(seconds) : seconds = seconds;
+  // combine into one string to display
+  timer.innerHTML = minutes + ":" + seconds;
+  if (total === 0) { resetIt(); }
 }
 
-function displayTime() {
-  let duration = getTime();
-  if (--duration === 0) { return; }
-  timer.innerHTML =
-    Math.floor(duration / 60) + ':' +
-    Math.floor(duration % 60);
-}
-
-let counter = 0;
 let timerID = 0;
 function playbutton() {
-  if (++counter % 2 !== 0) {
+  // depending on the playbutton icon
+  if (startStop.firstChild.classList.value === "fas fa-play") {
     timerID = startTimer();
-    startStop.firstChild.classList.remove('fa-play');
-    startStop.firstChild.classList.add('fa-pause');
   } else {
     stopTimer();
-    startStop.firstChild.classList.add('fa-play');
-    startStop.firstChild.classList.remove('fa-pause');
   }
 }
 
 let startTimer = function () {
-  return setInterval(displayTime, 1000);
+  // switch icon from play to pause
+  startStop.firstChild.classList.remove('fa-play');
+  startStop.firstChild.classList.add('fa-pause');
+  return setInterval(getTime, 50); // THIS IS WHERE THE MAGIC HAPPENS
 }
 
 function stopTimer() {
+  // switch icon from pause to play
+  startStop.firstChild.classList.add('fa-play');
+  startStop.firstChild.classList.remove('fa-pause');
   clearInterval(timerID);
 }
