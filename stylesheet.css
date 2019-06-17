@@ -22,16 +22,29 @@ body {
   height: 45vh;
 }
 
+.title {
+  font-size: 3rem;
+  padding: 1rem;
+}
+
 .lengths {
   display: flex;
   flex-direction: row;
   justify-content:  space-evenly;
+  font-size: 1.25rem;
+}
+
+.length {
+  margin: 1rem;
+  margin-bottom: 0;
 }
 
 .length_controls {
   display: flex;
   flex-direction:  row;
   justify-content: space-evenly;
+  margin: 1rem;
+  margin-bottom: 0;
 }
 
 .timer {
@@ -42,4 +55,22 @@ body {
   color: #111;
   border-radius: 50px;
   width: 300px;
+  margin: 1rem;
+}
+
+.controls {
+  margin: 1rem;
+}
+
+/* buttons */
+
+button {
+  border: none;
+  background-color: #1e555c;
+  font-size: 1.5rem;
+  color: darkgray;
+}
+
+button:hover {
+  cursor: pointer;
 }
