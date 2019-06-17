@@ -21,27 +21,33 @@ startStop.addEventListener("click", playbutton); // play/pause button
 
 /*functions*/
 // up-down length adjust functions
+function incrementBreak() {
+  let value = parseInt(breakLength.innerHTML);
+  if (value < 60) { breakLength.innerHTML = value + 1; }
+}
 function decrementBreak() {
   let value = parseInt(breakLength.innerHTML);
   if (value > 1) { breakLength.innerHTML = value - 1; }
 }
 
-function decrementSession() {
-  let value = parseInt(sessionLength.innerHTML);
-  if (value > 1) { sessionLength.innerHTML = value - 1; }
-  timer.innerHTML = sessionLength.innerHTML + ':' + '00';
-  stopTimer();
-}
-
-function incrementBreak() {
-  let value = parseInt(breakLength.innerHTML);
-  if (value < 60) { breakLength.innerHTML = value + 1; }
-}
-
 function incrementSession() {
   let value = parseInt(sessionLength.innerHTML);
   if (value < 60) { sessionLength.innerHTML = value + 1; }
-  timer.innerHTML = sessionLength.innerHTML + ':' + '00';
+  if (value > 10) {
+    timer.innerHTML = sessionLength.innerHTML + ':' + '00';
+  } else {
+    timer.innerHTML = "0" + sessionLength.innerHTML + ':' + '00';
+  }
+  stopTimer();
+}
+function decrementSession() {
+  let value = parseInt(sessionLength.innerHTML);
+  if (value > 1) { sessionLength.innerHTML = value - 1; }
+  if (value > 10) {
+    timer.innerHTML = sessionLength.innerHTML + ':' + '00';
+  } else {
+    timer.innerHTML = "0" + sessionLength.innerHTML + ':' + '00';
+  }
   stopTimer();
 }
 
@@ -70,6 +76,7 @@ function getTime() {
   seconds < 10 ? seconds = "0" + parseInt(seconds) : seconds = seconds;
   // combine into one string to display
   timer.innerHTML = minutes + ":" + seconds;
+  console.log(timer.innerHTML);
   if (total === 0) { resetIt(); }
 }
 
@@ -87,7 +94,7 @@ let startTimer = function () {
   // switch icon from play to pause
   startStop.firstChild.classList.remove('fa-play');
   startStop.firstChild.classList.add('fa-pause');
-  return setInterval(getTime, 50); // THIS IS WHERE THE MAGIC HAPPENS
+  return setInterval(getTime, 10); // THIS IS WHERE THE MAGIC HAPPENS
 }
 
 function stopTimer() {
