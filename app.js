@@ -64,11 +64,15 @@ function playOrPause() {
     let seconds = parseInt(time[3] + time[4]);
     // total seconds
     let duration = minutes * 60 + seconds; 
-    setInterval (function() {
+    let sessionTimer = setInterval (timeIt, 1000);
+    function timeIt() {
       duration = duration - 1;
       timer.innerHTML = 
       Math.floor(duration / 60) + 
       ':' + 
       Math.floor(duration % 60);
-    }, 1000);
+      if (duration === 0) {
+        clearInterval(sessionTimer);
+      }
+    }
 }
