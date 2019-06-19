@@ -111,7 +111,7 @@ let startTimer = function () {
   // switch icon from play to pause
   startStop.firstChild.classList.remove('fa-play');
   startStop.firstChild.classList.add('fa-pause');
-  return setInterval(getTime, 5); // THIS IS WHERE THE MAGIC HAPPENS
+  return setInterval(getTime, 1000); // THIS IS WHERE THE MAGIC HAPPENS
 }
 
 function stopTimer() {
