@@ -9,6 +9,8 @@ const sessionLength = document.getElementById("session-length");
 const reset = document.getElementById("reset"); // reset button
 const timer = document.getElementById("time-left"); // timer
 const startStop = document.getElementById("start_stop"); // play/pause button
+const alarm = document.getElementById("beep"); // audio element
+const timerLabel = document.getElementById("timer-label");
 
 /*listeners*/
 // up-down length adjust listeners
@@ -53,10 +55,13 @@ function decrementSession() {
 
 // reset button
 function resetIt() {
+  alarm.load();
   stopTimer();
   breakLength.innerHTML = 5;
   sessionLength.innerHTML = 25;
+  timerLabel.innerHTML = 'Session';
   timer.innerHTML = '25:00';
+  startStop.addEventListener("click", playbutton);
 }
 
 function getTime() {
@@ -76,12 +81,24 @@ function getTime() {
   seconds < 10 ? seconds = "0" + parseInt(seconds) : seconds = seconds;
   // combine into one string to display
   timer.innerHTML = minutes + ":" + seconds;
-  console.log(timer.innerHTML);
-  if (total === 0) { resetIt(); }
+  if (total === 0) {
+    alarm.play();
+    stopTimer();
+    // disable play/pause while at 00:00
+    startStop.removeEventListener("click", playbutton);
+    alarm.onended = () => {
+      // when the audio finishes
+      timerLabel.innerHTML === 'Session' ? startBreak() : startSession();
+      // enable play/pause after the time left has been updated
+      startStop.addEventListener("click", playbutton);
+      playbutton(); // didn't use 'startTimer' so that a new timerID gets set
+    }
+  }
 }
 
 let timerID = 0;
 function playbutton() {
+  console.log(timerID);
   // depending on the playbutton icon
   if (startStop.firstChild.classList.value === "fas fa-play") {
     timerID = startTimer();
@@ -94,7 +111,7 @@ let startTimer = function () {
   // switch icon from play to pause
   startStop.firstChild.classList.remove('fa-play');
   startStop.firstChild.classList.add('fa-pause');
-  return setInterval(getTime, 10); // THIS IS WHERE THE MAGIC HAPPENS
+  return setInterval(getTime, 5); // THIS IS WHERE THE MAGIC HAPPENS
 }
 
 function stopTimer() {
@@ -102,4 +119,22 @@ function stopTimer() {
   startStop.firstChild.classList.add('fa-play');
   startStop.firstChild.classList.remove('fa-pause');
   clearInterval(timerID);
+}
+
+function startBreak() {
+  timerLabel.innerHTML = 'Break';
+  if (breakLength.innerHTML > 10) {
+    timer.innerHTML = breakLength.innerHTML + ':' + '00';
+  } else {
+    timer.innerHTML = "0" + breakLength.innerHTML + ':' + '00';
+  }
+}
+
+function startSession() {
+  timerLabel.innerHTML = 'Session';
+  if (sessionLength.innerHTML > 10) {
+    timer.innerHTML = sessionLength.innerHTML + ':' + '00';
+  } else {
+    timer.innerHTML = "0" + sessionLength.innerHTML + ':' + '00';
+  }
 }
