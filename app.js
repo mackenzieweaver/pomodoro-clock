@@ -61,7 +61,6 @@ function resetIt() {
   sessionLength.innerHTML = 25;
   timerLabel.innerHTML = 'Session';
   timer.innerHTML = '25:00';
-  startStop.addEventListener("click", playbutton);
 }
 
 function getTime() {
@@ -70,8 +69,10 @@ function getTime() {
   // convert to number from string
   let minutes = parseInt(time[0] + time[1]);
   let seconds = parseInt(time[3] + time[4]);
-  // convert minutes to seconds and add seconds then subtract one to count down
-  let total = (minutes * 60 + seconds) - 1;
+  // convert minutes to seconds and add seconds
+  let total = (minutes * 60 + seconds);
+  console.log(timerID, total, timer.innerHTML);
+  total = total - 1;
   // split total amount of seconds into minutes
   minutes = Math.floor(total / 60);
   // and seconds
@@ -81,24 +82,14 @@ function getTime() {
   seconds < 10 ? seconds = "0" + parseInt(seconds) : seconds = seconds;
   // combine into one string to display
   timer.innerHTML = minutes + ":" + seconds;
-  if (total === 0) {
+  if (total === -1) { // -1 so that the 00:00 displays
     alarm.play();
-    stopTimer();
-    // disable play/pause while at 00:00
-    startStop.removeEventListener("click", playbutton);
-    alarm.onended = () => {
-      // when the audio finishes
-      timerLabel.innerHTML === 'Session' ? startBreak() : startSession();
-      // enable play/pause after the time left has been updated
-      startStop.addEventListener("click", playbutton);
-      playbutton(); // didn't use 'startTimer' so that a new timerID gets set
-    }
+    timerLabel.innerHTML === 'Session' ? startBreak() : startSession();
   }
 }
 
 let timerID = 0;
 function playbutton() {
-  console.log(timerID);
   // depending on the playbutton icon
   if (startStop.firstChild.classList.value === "fas fa-play") {
     timerID = startTimer();
@@ -111,7 +102,7 @@ let startTimer = function () {
   // switch icon from play to pause
   startStop.firstChild.classList.remove('fa-play');
   startStop.firstChild.classList.add('fa-pause');
-  return setInterval(getTime, 1000); // THIS IS WHERE THE MAGIC HAPPENS
+  return setInterval(getTime, 990); // THIS IS WHERE THE MAGIC HAPPENS
 }
 
 function stopTimer() {

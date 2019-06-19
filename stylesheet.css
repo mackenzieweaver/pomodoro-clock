@@ -77,3 +77,16 @@ button {
 button:hover {
   cursor: pointer;
 }
+
+#contact {
+  margin-top: 1rem;
+}
+
+#contact a {
+  color: white;
+  padding: 5px;
+}
+
+#contact a:hover {
+  color: gray;
+}
